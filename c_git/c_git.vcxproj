@@ -129,11 +129,18 @@
   <ItemGroup>
     <ClCompile Include="main.c" />
     <ClCompile Include="simple_c_array\Private\simple_c_array_string.c" />
+    <ClCompile Include="simple_c_helper_file\Private\simple_helper_file.c" />
+    <ClCompile Include="simple_c_string_algorithm\Private\simple_string_algorithm.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="simple_c_array\Public\Core\simple_c_array_marco.h" />
     <ClInclude Include="simple_c_array\Public\simple_c_array.h" />
     <ClInclude Include="simple_c_array\Public\simple_c_array_string.h" />
+    <ClInclude Include="simple_c_array\simple_c_array.h" />
+    <ClInclude Include="simple_c_helper_file\Public\simple_helper_file.h" />
+    <ClInclude Include="simple_c_helper_file\simple_c_helper_file.h" />
+    <ClInclude Include="simple_c_string_algorithm\Public\simple_string_algorithm.h" />
+    <ClInclude Include="simple_c_string_algorithm\simple_c_string_algorithm.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

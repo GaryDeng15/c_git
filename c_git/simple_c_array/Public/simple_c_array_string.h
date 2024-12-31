@@ -7,10 +7,27 @@ typedef struct {
 
 SIMPLE_C_STRUCT(simple_c_string, str_node);
 
-void init_c_string(simple_c_string* c_array);
+/**
+ * @brief ³õÊ¼»¯×Ö·û´®ÈÝÆ÷¡£
+ * @param c_string_array ×Ö·û´®ÈÝÆ÷
+*/
+void init_c_string(simple_c_string* c_string_array);
 
-void destroy_c_string(simple_c_string* c_array);
+/**
+ * @brief Ïú»Ù×Ö·û´®ÈÝÆ÷¡£
+ * @param c_string_array ×Ö·û´®ÈÝÆ÷
+*/
+void destroy_c_string(simple_c_string* c_string_array);
 
-void add_c_string(const char* in_data, simple_c_string* c_array);
+/**
+ * @brief Ìí¼ÓÒ»¸ö×Ö·û´®µ½ÈÝÆ÷¡£
+ * @param in_data Ìí¼Ó×Ö·û´®
+ * @param c_string_array ×Ö·û´®ÈÝÆ÷
+*/
+void add_c_string(const char* in_data, simple_c_string* c_string_array);
 
-void print_c_string(simple_c_string* c_array);
+/**
+ * @brief ´òÓ¡×Ö·û´®ÈÝÆ÷Ã¿¸öÔªËØµ½¿ØÖÆÌ¨¡£
+ * @param c_string_array ×Ö·û´®ÈÝÆ÷
+*/
+void print_c_string(simple_c_string* c_string_array);

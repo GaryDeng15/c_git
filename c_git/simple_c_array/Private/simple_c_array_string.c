@@ -6,34 +6,34 @@
 #include <assert.h>
 #include <string.h>
 
-void init_c_string(simple_c_string* c_array)
+void init_c_string(simple_c_string* c_string_array)
 {
-	assert(c_array);
-	c_array->size = 0;
-	c_array->data = NULL;
+	assert(c_string_array);
+	c_string_array->size = 0;
+	c_string_array->data = NULL;
 }
 
-void destroy_c_string(simple_c_string* c_array)
+void destroy_c_string(simple_c_string* c_string_array)
 {
-	assert(c_array);
-	free(c_array->data);
+	assert(c_string_array);
+	free(c_string_array->data);
 }
 
-void add_c_string(const char *in_data, simple_c_string* c_array)
+void add_c_string(const char *in_data, simple_c_string* c_string_array)
 {
-	assert(c_array);
+	assert(c_string_array);
 	
-	int cpy_index = c_array->size;
-	c_array->size++;
-	c_array->data = realloc(c_array->data, sizeof(str_node) * c_array->size);
+	int cpy_index = c_string_array->size;
+	c_string_array->size++;
+	c_string_array->data = realloc(c_string_array->data, sizeof(str_node) * c_string_array->size);
 
-	strcpy(c_array->data[cpy_index].data, in_data);
+	strcpy(c_string_array->data[cpy_index].data, in_data);
 }
 
-void print_c_string(simple_c_string* c_array)
+void print_c_string(simple_c_string* c_string_array)
 {
-	assert(c_array);
-	for (int i = 0; i < c_array->size; i++) {
-		printf("%s \r\n", c_array->data[i].data);
+	assert(c_string_array);
+	for (int i = 0; i < c_string_array->size; i++) {
+		printf("%s \r\n", c_string_array->data[i].data);
 	}
 }

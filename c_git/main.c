@@ -1,6 +1,7 @@
 #include <stdio.h>
-#include "simple_c_array/Public/simple_c_array.h"
-
+#include "simple_c_array/simple_c_array.h"
+#include "simple_c_string_algorithm/Public/simple_string_algorithm.h"
+#include "simple_c_helper_file/Public/simple_helper_file.h"
 int main() {
 
 	simple_c_int int_array;
@@ -13,6 +14,20 @@ int main() {
 	for (int i = 0; i < int_array.size; i++) {
 		printf("%d \r\n", int_array.data[i]);
 	}
+
+	char str[] = "jkoepgaryeaew";
+	char sub_str[] = "gary";
+	remove_string_start(&str, &sub_str);
+	printf("%s \r\n", str);
+	remove_char_start(str, 'e');
+	printf("%s \r\n", str);
+	remove_char_end(str, 'e');
+	printf("%s \r\n", str);
+
+	int result = copy_file(
+		"E:\\UnrealProjects\\Learning\\AboutCG\\Renzhai\\c_git\\c_git\\test.txt", 
+		"E:\\UnrealProjects\\Learning\\AboutCG\\Renzhai\\c_git\\c_git\\gary.txt");
+	printf("%d \r\n", result);
 
 	system("pause");
 	exit(0);
