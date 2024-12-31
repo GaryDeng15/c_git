@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Source Files\simple_c_array">
+      <UniqueIdentifier>{d4b2d1f0-7c89-45e0-8e7d-9d304be64dc1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\simple_c_array\Private">
+      <UniqueIdentifier>{1906ae6d-9bd0-4eb8-a521-dc83caafe67d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\simple_c_array\Public">
+      <UniqueIdentifier>{5d3ced7e-3b9c-4b76-b583-22e414eae7dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\simple_c_array\Public\Core">
+      <UniqueIdentifier>{7026bced-a1d6-4f32-b053-e932e0be8bca}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="simple_c_array\Private\simple_c_array_string.c">
+      <Filter>Source Files\simple_c_array\Private</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="simple_c_array\Public\simple_c_array.h">
+      <Filter>Source Files\simple_c_array\Public</Filter>
+    </ClInclude>
+    <ClInclude Include="simple_c_array\Public\simple_c_array_string.h">
+      <Filter>Source Files\simple_c_array\Public</Filter>
+    </ClInclude>
+    <ClInclude Include="simple_c_array\Public\Core\simple_c_array_marco.h">
+      <Filter>Source Files\simple_c_array\Public\Core</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
