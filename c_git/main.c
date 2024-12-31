@@ -29,6 +29,16 @@ int main() {
 		"E:\\UnrealProjects\\Learning\\AboutCG\\Renzhai\\c_git\\c_git\\gary.txt");
 	printf("%d \r\n", result);
 
+	def_c_paths def_c_paths;
+	def_c_paths.index = 0;
+
+	find_files("E:\\Projects", &def_c_paths,true);
+
+	for (int i = 0; i < def_c_paths.index; i++)
+	{
+		printf("%s \r\n", def_c_paths.paths[i]);
+	}
+
 	system("pause");
 	exit(0);
 }
