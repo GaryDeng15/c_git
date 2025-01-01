@@ -1,5 +1,6 @@
 #pragma once
 #include "Public/Core/simple_c_array_marco.h"
+#include "Public/simple_c_array_string.h"
 
 SIMPLE_C_ARRAY(simple_c_int, int);
 

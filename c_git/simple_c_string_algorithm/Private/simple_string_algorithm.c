@@ -48,7 +48,6 @@ void remove_char_end(char* str, char rm_char)
 		if (str[i] == rm_char)
 		{
 			strcpy(&str[i], &str[i + 1]);
-			return;
 		}
 	}
 }
