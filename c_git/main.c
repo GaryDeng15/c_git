@@ -3,8 +3,10 @@
 #include "simple_c_array/simple_c_array.h"
 #include "simple_c_string_algorithm/simple_c_string_algorithm.h"
 #include "simple_c_helper_file/simple_c_helper_file.h"
+#include "simple_c_windows/simple_c_windows.h"
 #include <stdio.h>
 #include <time.h>
+
 /**
  * @brief .git[.garygit]文件路径
 */
@@ -14,6 +16,20 @@ char git_path[256] = { 0 };
  * @brief 日志文件路径
 */
 char git_log_path[256] = { 0 };
+
+// Core
+
+void init_engine();
+void engine_loop();
+void exit_engine();
+
+// Get
+
+char* get_current_time();
+char* get_git_path();
+char* get_log_path();
+void log_write(const char* log_content);
+
 
 /**
  * @brief 获取当前时间字符串
@@ -105,7 +121,6 @@ void log_write(const char* log_content) {
  * @brief 初始化引擎
 */
 void init_engine() {
-	printf("================== 引擎初始化 ==================\r\n");
 	log_write("================== 引擎初始化 ==================\r\n");
 	char * current_git_path = get_git_path();
 	char* current_log_path = get_log_path();
@@ -115,14 +130,24 @@ void init_engine() {
  * @brief 引擎循环
 */
 void engine_loop() {
-	printf("================== 引擎循环 ==================\r\n");
 	log_write("当前 git 循环\r\n");
 	log_write("================== 引擎循环 ==================\r\n");
 
 	char input_buff[1024] = { 0 };
 	int is_exit = 0;
 	while (!is_exit) {
-		printf("请输入指令： \r\n");
+		printf("\r\n");
+		set_console_w_color(SIMPLE_PALE_GREEN, 0);
+		printf("GARY ssh : ");
+		set_console_w_color(SIMPLE_LAVENDER, 0);
+		printf("WINDOWS64 ");
+		set_console_w_color(SIMPLE_CANARY_YELLOW, 0);
+		char buf_cwd[MAX_PATH];
+		_getcwd(buf_cwd, MAX_PATH);
+		printf(" %s \r\n", buf_cwd);
+		set_console_w_color(SIMPLE_WHITE, 0);
+		printf(" \r\n ");
+		printf(" $ ");
 		fgets(input_buff, sizeof(input_buff), stdin);
 		if (strstr(input_buff, "git exit") != 0)
 		{
@@ -144,7 +169,6 @@ void engine_loop() {
  * @brief 退出引擎
 */
 void exit_engine(){
-	printf("================== 退出引擎 ==================\r\n");
 	log_write("当前 git 退出成功\r\n");
 	log_write("================== 退出引擎 ==================\r\n");
 }

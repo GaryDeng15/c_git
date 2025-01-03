@@ -131,6 +131,7 @@
     <ClCompile Include="simple_c_array\Private\simple_c_array_string.c" />
     <ClCompile Include="simple_c_helper_file\Private\simple_helper_file.c" />
     <ClCompile Include="simple_c_string_algorithm\Private\simple_string_algorithm.c" />
+    <ClCompile Include="simple_c_windows\Private\simple_c_windows_settings.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="simple_c_array\Public\Core\simple_c_array_marco.h" />
@@ -141,6 +142,8 @@
     <ClInclude Include="simple_c_helper_file\simple_c_helper_file.h" />
     <ClInclude Include="simple_c_string_algorithm\Public\simple_string_algorithm.h" />
     <ClInclude Include="simple_c_string_algorithm\simple_c_string_algorithm.h" />
+    <ClInclude Include="simple_c_windows\Public\simple_c_windows_settings.h" />
+    <ClInclude Include="simple_c_windows\simple_c_windows.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
