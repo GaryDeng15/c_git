@@ -1,9 +1,10 @@
 #define _CRT_SECURE_NO_WARNINGS
-#include <stdio.h>
+
 #include "simple_c_array/simple_c_array.h"
 #include "simple_c_string_algorithm/simple_c_string_algorithm.h"
 #include "simple_c_helper_file/simple_c_helper_file.h"
-
+#include <stdio.h>
+#include <time.h>
 /**
  * @brief .git[.garygit]文件路径
 */
@@ -18,8 +19,10 @@ char git_log_path[256] = { 0 };
  * @brief 获取当前时间字符串
  * @return 当前时间字符串
 */
-char get_current_time() {
-	return ctime(__TIME__);
+char* get_current_time() {
+	time_t current;
+	time(&current);
+	return ctime(&current);
 }
 
 /**
@@ -103,6 +106,7 @@ void log_write(const char* log_content) {
 */
 void init_engine() {
 	printf("================== 引擎初始化 ==================\r\n");
+	log_write("================== 引擎初始化 ==================\r\n");
 	char * current_git_path = get_git_path();
 	char* current_log_path = get_log_path();
 }
@@ -112,6 +116,8 @@ void init_engine() {
 */
 void engine_loop() {
 	printf("================== 引擎循环 ==================\r\n");
+	log_write("当前 git 循环\r\n");
+	log_write("================== 引擎循环 ==================\r\n");
 
 	char input_buff[1024] = { 0 };
 	int is_exit = 0;
@@ -125,7 +131,7 @@ void engine_loop() {
 		else if (strstr(input_buff, "git init") != 0) {
 			init_engine();
 			char* current_git_path = get_git_path();
-			log_write("当前 git 初始化成功！");
+			log_write("当前 git 初始化成功");
 		}
 		else {
 			printf("没有该指令 %s \r\n", input_buff);
@@ -139,13 +145,11 @@ void engine_loop() {
 */
 void exit_engine(){
 	printf("================== 退出引擎 ==================\r\n");
+	log_write("当前 git 退出成功\r\n");
+	log_write("================== 退出引擎 ==================\r\n");
 }
 
 int main() {
-
-	char test[] = "fdaggarykl;k\n";
-	remove_char_end(test, 'a');
-	printf("%s \r\n", test);
 
 	init_engine();
 
