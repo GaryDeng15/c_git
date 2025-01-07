@@ -31,3 +31,11 @@ void add_c_string(const char* in_data, simple_c_string* c_string_array);
  * @param c_string_array 字符串容器
 */
 void print_c_string(simple_c_string* c_string_array);
+
+/**
+ * @brief 获取指定索引的字符串
+ * @param index 指定的索引
+ * @param c_string_array 字符串容器
+ * @return 指定索引的字符串
+*/
+char* get_str(int index, simple_c_string* c_string_array);

@@ -37,3 +37,8 @@ void print_c_string(simple_c_string* c_string_array)
 		printf("%s \r\n", c_string_array->data[i].data);
 	}
 }
+
+char* get_str(int index, simple_c_string* c_string_array)
+{
+	return c_string_array->data[index].data;
+}

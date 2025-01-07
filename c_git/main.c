@@ -4,6 +4,7 @@
 #include "simple_c_string_algorithm/simple_c_string_algorithm.h"
 #include "simple_c_helper_file/simple_c_helper_file.h"
 #include "simple_c_windows/simple_c_windows.h"
+#include "simple_c_array/simple_c_array.h"
 #include <stdio.h>
 #include <time.h>
 
@@ -16,6 +17,11 @@ char git_path[256] = { 0 };
  * @brief 日志文件路径
 */
 char git_log_path[256] = { 0 };
+
+/**
+ * @brief git远端路径
+*/
+char git_remote_origin[256] = { 0 };
 
 // Core
 
@@ -104,7 +110,7 @@ void log_write(const char* log_content) {
 		char* current_time = get_current_time();
 		remove_char_end(current_time, '\n');
 
-		strcpy(buff, "[");
+		strcpy(buff, "\r\n[");
 		strcat(buff, current_time);
 		strcat(buff, "] ");
 		strcat(buff, log_content);
@@ -130,12 +136,12 @@ void init_engine() {
  * @brief 引擎循环
 */
 void engine_loop() {
-	log_write("当前 git 循环\r\n");
-	log_write("================== 引擎循环 ==================\r\n");
 
 	char input_buff[1024] = { 0 };
 	int is_exit = 0;
 	while (!is_exit) {
+		/*log_write("当前 git 循环\r\n");
+		log_write("================== 引擎循环 ==================\r\n");*/
 		printf("\r\n");
 		set_console_w_color(SIMPLE_PALE_GREEN, 0);
 		printf("GARY ssh : ");
@@ -158,9 +164,29 @@ void engine_loop() {
 			char* current_git_path = get_git_path();
 			log_write("当前 git 初始化成功");
 		}
+		else if (strstr(input_buff, "git remote add origin ") != 0) {
+			simple_c_string c_string;
+			init_c_string(&c_string);
+
+			char* temp = strtok(input_buff, " ");
+			while (temp) {
+				if ((temp = strtok(NULL, " ")) != NULL) {
+					add_c_string(temp, &c_string);
+				}
+			}
+			char * location = get_str(3, &c_string);
+			remove_char_end(location, '\n');
+			strcpy(git_remote_origin, location);
+			char log_content[256] = "远端的路径设置为：";
+			strcat(log_content, git_remote_origin);
+			log_write(log_content);
+
+			destroy_c_string(&c_string);
+		}
 		else {
-			printf("没有该指令 %s \r\n", input_buff);
-			printf("\r\n");
+			char log_content[256] = "没有该指令：";
+			strcat(log_content, input_buff);
+			log_write(log_content);
 		}
 	}
 }
@@ -174,8 +200,6 @@ void exit_engine(){
 }
 
 int main() {
-
-	init_engine();
 
 	engine_loop();
 
