@@ -64,3 +64,13 @@ void find_files(char const* in_path, def_c_paths* paths, bool b_recursion)
 		_findclose(hfile);
 	}
 }
+
+bool create_file(const char* file_name)
+{
+	FILE* file_to_create = NULL;
+	if ((file_to_create = fopen(file_name, "w+")) != NULL) {
+		fclose(file_to_create);
+		return true;
+	}
+	return false;
+}

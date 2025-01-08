@@ -42,3 +42,15 @@ char* get_str(int index, simple_c_string* c_string_array)
 {
 	return c_string_array->data[index].data;
 }
+
+void dismantle_string(char* in_data, const char* sub_str, simple_c_string* c_string_array)
+{
+	init_c_string(c_string_array);
+	char* temp = strtok(in_data, sub_str);
+	add_c_string(temp, c_string_array);
+	while (temp) {
+		if ((temp = strtok(NULL, sub_str)) != NULL) {
+			add_c_string(temp, c_string_array);
+		}
+	}
+}

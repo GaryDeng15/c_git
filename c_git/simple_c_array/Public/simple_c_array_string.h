@@ -39,3 +39,11 @@ void print_c_string(simple_c_string* c_string_array);
  * @return 指定索引的字符串
 */
 char* get_str(int index, simple_c_string* c_string_array);
+
+/**
+ * @brief 以指定分隔符拆分字符串
+ * @param in_data 需要拆分的字符串
+ * @param sub_str 分隔符
+ * @param c_string_array 字符串容器
+*/
+void dismantle_string(char* in_data, const char* sub_str, simple_c_string* c_string_array);

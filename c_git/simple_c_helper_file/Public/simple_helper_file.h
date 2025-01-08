@@ -24,3 +24,10 @@ typedef struct
 * @param b_recursion 是否递归查找
 */
 void find_files(char const* in_path, def_c_paths* paths, bool b_recursion);
+
+/** 
+* @brief  创建指定文件
+* @param file_name 要创建的文件  
+* @return 创建文件成功与否，true-成功，false-失败
+*/
+bool create_file(const char* file_name);

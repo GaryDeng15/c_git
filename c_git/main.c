@@ -7,21 +7,47 @@
 #include "simple_c_array/simple_c_array.h"
 #include <stdio.h>
 #include <time.h>
+#include <io.h>
 
 /**
  * @brief .git[.garygit]文件路径
 */
-char git_path[256] = { 0 };
+char git_path[MAX_PATH] = { 0 };
 
 /**
  * @brief 日志文件路径
 */
-char git_log_path[256] = { 0 };
+char git_log_path[MAX_PATH] = { 0 };
 
 /**
  * @brief git远端路径
 */
-char git_remote_origin[256] = { 0 };
+char git_remote_origin[MAX_PATH] = { 0 };
+
+/**
+ * @brief git账户名
+*/
+char git_account[MAX_PATH] = { 0 };
+
+/**
+ * @brief git密码
+*/
+char git_password[MAX_PATH] = { 0 };
+
+/**
+ * @brief git邮箱
+*/
+char git_email[MAX_PATH] = { 0 };
+
+/**
+ * @brief git本地配置文件路径
+*/
+char git_local_config_path[] = "E:\\local_git\\";
+
+/**
+ * @brief git本地配置文件名字
+*/
+char git_local_config_name[MAX_PATH] = { 0 };
 
 // Core
 
@@ -130,6 +156,51 @@ void init_engine() {
 	log_write("================== 引擎初始化 ==================\r\n");
 	char * current_git_path = get_git_path();
 	char* current_log_path = get_log_path();
+
+	char temp_config[MAX_PATH] = { 0 };
+	_mkdir(git_local_config_path);
+	strcpy(temp_config, git_local_config_path);
+	strcat(temp_config, "git_config.ini");
+	if ((_access(temp_config, 0) == -1)) {
+		create_file(temp_config);
+	}
+	else {
+		char config_buff[1024 * 10] = { 0 };
+		int file_size = 0;
+		FILE* git_config = NULL;
+		if ((git_config = fopen(temp_config, "a")) != NULL) {
+			if ((file_size = fread(config_buff, sizeof(char), sizeof(config_buff), git_config)) > 0) {
+				simple_c_string temp_string;
+				dismantle_string(config_buff, "\n", &temp_string);
+
+				for (int i = 0; i < temp_string.size; i++) {
+					if (strstr(temp_string.data[i].data, "Account=")) {
+						simple_c_string temp;
+						dismantle_string(temp_string.data[i].data, "=", &temp);
+						char* value = get_str(1, &temp);
+						strcpy(git_account, value);
+						destroy_c_string(&temp);
+					}
+					else if (strstr(temp_string.data[i].data, "Password=")) {
+						simple_c_string temp;
+						dismantle_string(temp_string.data[i].data, "=", &temp);
+						char* value = get_str(1, &temp);
+						strcpy(git_password, value);
+						destroy_c_string(&temp);
+					}
+					else if (strstr(temp_string.data[i].data, "RemoteOrigin=")) {
+						simple_c_string temp;
+						dismantle_string(temp_string.data[i].data, "=", &temp);
+						char* value = get_str(1, &temp);
+						strcpy(git_remote_origin, value);
+						destroy_c_string(&temp);
+					}
+				}
+
+				destroy_c_string(&temp_string);
+			}
+		}
+	}
 }
 
 /**
@@ -166,15 +237,8 @@ void engine_loop() {
 		}
 		else if (strstr(input_buff, "git remote add origin ") != 0) {
 			simple_c_string c_string;
-			init_c_string(&c_string);
-
-			char* temp = strtok(input_buff, " ");
-			while (temp) {
-				if ((temp = strtok(NULL, " ")) != NULL) {
-					add_c_string(temp, &c_string);
-				}
-			}
-			char * location = get_str(3, &c_string);
+			dismantle_string(input_buff, " ", &c_string);
+			char * location = get_str(4, &c_string);
 			remove_char_end(location, '\n');
 			strcpy(git_remote_origin, location);
 			char log_content[256] = "远端的路径设置为：";
