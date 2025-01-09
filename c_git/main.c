@@ -25,19 +25,27 @@ char git_log_path[MAX_PATH] = { 0 };
 char git_remote_origin[MAX_PATH] = { 0 };
 
 /**
- * @brief git账户名
+ * @brief git用户信息
 */
-char git_account[MAX_PATH] = { 0 };
+typedef struct GitUser {
+	/**
+	* @brief git账户名
+	*/
+	char account[MAX_PATH];
 
-/**
- * @brief git密码
-*/
-char git_password[MAX_PATH] = { 0 };
+	/**
+	 * @brief git密码
+	*/
+	char password[MAX_PATH];
 
-/**
- * @brief git邮箱
-*/
-char git_email[MAX_PATH] = { 0 };
+	/**
+	 * @brief git邮箱
+	*/
+	char email[MAX_PATH];
+}GitUser;
+
+GitUser user;
+
 
 /**
  * @brief git本地配置文件路径
@@ -165,27 +173,26 @@ void init_engine() {
 		create_file(temp_config);
 	}
 	else {
-		char config_buff[1024 * 10] = { 0 };
-		int file_size = 0;
 		FILE* git_config = NULL;
-		if ((git_config = fopen(temp_config, "a")) != NULL) {
+		if ((git_config = fopen(temp_config, "r")) != NULL) {
+			char config_buff[1024 * 10] = { 0 };
+			int file_size = 0;
 			if ((file_size = fread(config_buff, sizeof(char), sizeof(config_buff), git_config)) > 0) {
 				simple_c_string temp_string;
 				dismantle_string(config_buff, "\n", &temp_string);
-
 				for (int i = 0; i < temp_string.size; i++) {
 					if (strstr(temp_string.data[i].data, "Account=")) {
 						simple_c_string temp;
 						dismantle_string(temp_string.data[i].data, "=", &temp);
 						char* value = get_str(1, &temp);
-						strcpy(git_account, value);
+						strcpy(user.account, value);
 						destroy_c_string(&temp);
 					}
 					else if (strstr(temp_string.data[i].data, "Password=")) {
 						simple_c_string temp;
 						dismantle_string(temp_string.data[i].data, "=", &temp);
 						char* value = get_str(1, &temp);
-						strcpy(git_password, value);
+						strcpy(user.password, value);
 						destroy_c_string(&temp);
 					}
 					else if (strstr(temp_string.data[i].data, "RemoteOrigin=")) {
@@ -195,8 +202,14 @@ void init_engine() {
 						strcpy(git_remote_origin, value);
 						destroy_c_string(&temp);
 					}
+					else if (strstr(temp_string.data[i].data, "Email=")) {
+						simple_c_string temp;
+						dismantle_string(temp_string.data[i].data, "=", &temp);
+						char* value = get_str(1, &temp);
+						strcpy(user.email, value);
+						destroy_c_string(&temp);
+					}
 				}
-
 				destroy_c_string(&temp_string);
 			}
 		}
@@ -246,6 +259,55 @@ void engine_loop() {
 			log_write(log_content);
 
 			destroy_c_string(&c_string);
+		}
+		else if (strstr(input_buff, "git --global user.name ") != 0) {
+			simple_c_string c_string;
+			dismantle_string(input_buff, " ", &c_string);
+			char* location = get_str(3, &c_string);
+			remove_char_end(location, '\n');
+			strcpy(user.account, location);
+			char log_content[256] = "git账号名设置为：";
+			strcat(log_content, user.account);
+			log_write(log_content);
+
+			destroy_c_string(&c_string);
+		}
+		else if (strstr(input_buff, "git --global user.password ") != 0) {
+			simple_c_string c_string;
+			dismantle_string(input_buff, " ", &c_string);
+			char* location = get_str(3, &c_string);
+			remove_char_end(location, '\n');
+			strcpy(user.password, location);
+			char log_content[256] = "git账号密码设置为：";
+			strcat(log_content, user.password);
+			log_write(log_content);
+
+			destroy_c_string(&c_string);
+		}
+		else if (strstr(input_buff, "git --global user.email ") != 0) {
+			simple_c_string c_string;
+			dismantle_string(input_buff, " ", &c_string);
+			char* location = get_str(3, &c_string);
+			remove_char_end(location, '\n');
+			strcpy(user.email, location);
+			char log_content[256] = "git账号邮箱设置为：";
+			strcat(log_content, user.email);
+			log_write(log_content);
+
+			destroy_c_string(&c_string);
+		}
+		else if (strstr(input_buff, "ssh-keygen -t rsa -C ") != 0) {
+			// OpenSSL RSA加密，上传公钥到git，加密数据，解密数据用私钥
+			/*simple_c_string c_string;
+			dismantle_string(input_buff, " ", &c_string);
+			char* location = get_str(3, &c_string);
+			remove_char_end(location, '\n');
+			strcpy(user.email, location);
+			char log_content[256] = "git账号邮箱设置为：";
+			strcat(log_content, user.email);
+			log_write(log_content);
+
+			destroy_c_string(&c_string);*/
 		}
 		else {
 			char log_content[256] = "没有该指令：";
