@@ -2,6 +2,7 @@
 #include "../Public/simple_string_algorithm.h"
 #include <stdio.h>
 #include <string.h>
+#include <stdarg.h>
 #define INDEX_NONE -1
 
 int find_string(char* str, char const* sub_str)
@@ -71,4 +72,75 @@ void remove_char_start(char* str, char rm_char)
 			break;
 		}
 	}
+}
+
+void replace_char_inline(char* str, const char sub_char_a, const char sub_char_b)
+{
+	int index = find_string(str, &sub_char_a);
+	if (index != INDEX_NONE)
+	{
+		str[index] = sub_char_b;
+		replace_char_inline(str, sub_char_a, sub_char_b);
+	}
+}
+
+int get_printf(char* buf, char* format, ...)
+{
+	va_list param_list;
+	va_start(param_list, format);
+	char param_char = *format++;
+
+	for (int i = 0; param_char != '\0'; i++)
+	{
+		if (param_char != '\%' && *(format - 1) != '\%')
+		{
+			buf[i] = param_char;
+		}
+		else
+		{
+			param_char = *format++;
+			switch (param_char)
+			{
+			case 'c':
+			case 'C':
+			{
+				buf[i] = va_arg(param_list, char);
+				break;
+			}
+			case 's':
+			case 'S':
+			{
+				char* p = va_arg(param_list, char*);
+				int len = strlen(p);
+				for (int j = 0; j < len;)
+				{
+					buf[i++] = p[j++];
+				}
+				i--;
+
+				break;
+			}
+			case 'd':
+			case 'D':
+			case 'i':
+			case 'I':
+			{
+				int new_int = va_arg(param_list, int);
+				char buf_int[8] = { 0 };
+				char* p = itoa(new_int, buf_int, 10);
+				int len = strlen(p);
+				for (int j = 0; j < len;)
+				{
+					buf[i++] = p[j++];
+				}
+				i--;
+				break;
+			}
+			}
+		}
+
+		param_char = *format++;
+	}
+
+	return strlen(buf) + 1;
 }

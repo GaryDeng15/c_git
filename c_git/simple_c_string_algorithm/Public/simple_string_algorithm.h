@@ -27,3 +27,20 @@ void remove_char_end(char* str, char rm_char);
  * @param rm_char 要移除的字符
 */
 void remove_char_start(char* str, char rm_char);
+
+/**
+ * @brief 替换字符串的字符
+ * @param str 目标字符串
+ * @param sub_char_a 被替换字符
+ * @param sub_char_b 替换字符
+*/
+void replace_char_inline(char* str, const char sub_char_a, const char sub_char_b);
+
+/**
+ * @brief 格式化拼接字符串
+ * @param buf 输出字符串
+ * @param format 格式字符串
+ * @param  可变参数
+ * @return 返回输出字符串的size（带'\0'）
+*/
+int get_printf(char* buf, char* format, ...);
