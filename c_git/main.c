@@ -52,7 +52,7 @@ GitUser user;
 typedef enum LogLevel {
 	GIT_LOG,
 	GIT_SUCCESS,
-	GIT_WARNNING,
+	GIT_WARNING,
 	GIT_ERROR
 };
 
@@ -83,10 +83,10 @@ char* get_log_path();
 
 void log_write(enum LogLevel log_level,const char* log_content, ...);
 
-#define log_log(log_content, ...) log_write(GIT_LOG, log_content, __VA_ARGS__)
-#define log_success(log_content, ...) log_write(GIT_SUCCESS, log_content, __VA_ARGS__)
-#define log_error(log_content, ...) log_write(GIT_ERROR, log_content, __VA_ARGS__)
-#define log_warning(log_content, ...) log_write(GIT_WARNING, log_content, __VA_ARGS__)
+#define log_log(...) log_write(GIT_LOG, __VA_ARGS__)
+#define log_success(...) log_write(GIT_SUCCESS, __VA_ARGS__)
+#define log_error(...) log_write(GIT_ERROR, __VA_ARGS__)
+#define log_warning(...) log_write(GIT_WARNING, __VA_ARGS__)
 
 
 /**
@@ -155,8 +155,9 @@ char* get_log_path() {
  * @param log_content 打印日志内容
  * @return 
 */
-void log_write(enum LogLevel log_level, const char* log_content, ...) {
+void log_write(enum LogLevel log_level, char* log_content, ...) {
 	char log_level_str[64] = {0};
+
 	switch (log_level)
 	{
 	case GIT_LOG:
@@ -165,7 +166,7 @@ void log_write(enum LogLevel log_level, const char* log_content, ...) {
 	case GIT_SUCCESS:
 		strcpy(log_level_str, "SUCCESS");
 		break;
-	case GIT_WARNNING:
+	case GIT_WARNING:
 		strcpy(log_level_str, "WARNNING");
 		break;
 	case GIT_ERROR:
@@ -181,12 +182,41 @@ void log_write(enum LogLevel log_level, const char* log_content, ...) {
 	FILE* log_file = NULL;
 	if ((log_file = fopen(log_path, "a+")) != NULL) {
 		char buff[1024] = { 0 };
+		ZeroMemory(buff, sizeof(char) * 1024);
+		va_list args;
+		va_start(args, log_content);
+		_vsnprintf_s(buff, 1024 - 1, 1024, log_content, args);
+		va_end(args);
+		buff[1024 - 1] = 0;
+
 		char* current_time = get_current_time();
 		remove_char_end(current_time, '\n');
-		get_printf(buff, "\r\n[%s][%s] %s", current_time, log_level_str, log_content);
+		char result[1024] = { 0 };
+		get_printf(result, "\r\n[%s][%s] %s", current_time, log_level_str, buff);
 
-		printf(buff);
-		fprintf(log_file, buff);
+		switch (log_level)
+		{
+		case GIT_LOG:
+			set_console_w_color(SIMPLE_WHITE, SIMPLE_BLACK);
+			printf(result);
+			break;
+		case GIT_SUCCESS:
+			set_console_w_color(SIMPLE_GREEN, SIMPLE_BLACK);
+			printf(result);
+			break;
+		case GIT_WARNING:
+			set_console_w_color(SIMPLE_YELLOW, SIMPLE_BLACK);
+			printf(result);
+			break;
+		case GIT_ERROR:
+			set_console_w_color(SIMPLE_RED, SIMPLE_BLACK);
+			printf(result);
+			break;
+		default:
+			break;
+		}
+		set_console_w_color(SIMPLE_WHITE, SIMPLE_BLACK);
+		fprintf(log_file, result);
 		fclose(log_file);
 	}
 }
@@ -280,7 +310,7 @@ void engine_loop() {
 		else if (strstr(input_buff, "git init") != 0) {
 			init_engine();
 			char* current_git_path = get_git_path();
-			log_success("当前 git 初始化成功");
+			log_success("当前 git 初始化成功 [%s]", current_git_path);
 		}
 		else if (strstr(input_buff, "git remote add origin ") != 0) {
 			simple_c_string c_string;
@@ -288,9 +318,7 @@ void engine_loop() {
 			char * location = get_str(4, &c_string);
 			remove_char_end(location, '\n');
 			strcpy(git_remote_origin, location);
-			char log_content[256] = "远端的路径设置为：";
-			strcat(log_content, git_remote_origin);
-			log_success(log_content);
+			log_success("远端的路径设置为 [%s]", git_remote_origin);
 
 			destroy_c_string(&c_string);
 		}
@@ -300,9 +328,7 @@ void engine_loop() {
 			char* location = get_str(3, &c_string);
 			remove_char_end(location, '\n');
 			strcpy(user.account, location);
-			char log_content[256] = "git账号名设置为：";
-			strcat(log_content, user.account);
-			log_success(log_content);
+			log_success("git账号名设置为 %s", user.account);
 			destroy_c_string(&c_string);
 		}
 		else if (strstr(input_buff, "git --global user.password ") != 0) {
@@ -311,9 +337,7 @@ void engine_loop() {
 			char* location = get_str(3, &c_string);
 			remove_char_end(location, '\n');
 			strcpy(user.password, location);
-			char log_content[256] = "git账号密码设置为：";
-			strcat(log_content, user.password);
-			log_success(log_content);
+			log_success("git账号密码设置为 %s", user.password);
 			destroy_c_string(&c_string);
 		}
 		else if (strstr(input_buff, "git --global user.email ") != 0) {
@@ -322,9 +346,7 @@ void engine_loop() {
 			char* location = get_str(3, &c_string);
 			remove_char_end(location, '\n');
 			strcpy(user.email, location);
-			char log_content[256] = "git账号邮箱设置为：";
-			strcat(log_content, user.email);
-			log_success(log_content);
+			log_success("git账号邮箱设置为 %s", user.email);
 			destroy_c_string(&c_string);
 		}
 		else if (strstr(input_buff, "ssh-keygen -t rsa -C ") != 0) {
@@ -340,10 +362,16 @@ void engine_loop() {
 
 			destroy_c_string(&c_string);*/
 		}
+		else if (strstr(input_buff, "git --help") != 0) {
+			log_log("git init\t 初始化");
+			log_log("git remote add origin\t 设置远端路径");
+			log_log("git --global user.name\t 设置用户名");
+			log_log("git --global user.password\t 设置密码");
+			log_log("git --help \t 帮助手册");
+		}
 		else {
-			char log_content[256] = "没有该指令：";
-			strcat(log_content, input_buff);
-			log_error(log_content);
+			log_error("没有该指令 %s", input_buff);
+			log_warning("或许你可以通过 git --help 查看相关命令");
 		}
 	}
 }
