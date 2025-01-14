@@ -24,6 +24,8 @@ void init_reg_info(RegInfo* info);
 
 bool register_info(RegInfo* info);
 
+bool delete_register_info(RegInfo* info);
+
 int main(int argc, char* argv[]) {
 	const char *commit_type = argv[1];
 	const char* path_exe = argv[2];
@@ -77,8 +79,6 @@ int main(int argc, char* argv[]) {
 		
 	}
 
-	
-
 	system("pause");
 	return 0;
 }
@@ -126,5 +126,10 @@ bool register_info(RegInfo* info)
 	else {
 		printf("\n error code RegSetValueEx = %i \n", result_value);
 	}
+	return false;
+}
+
+bool delete_register_info(RegInfo* info)
+{
 	return false;
 }
