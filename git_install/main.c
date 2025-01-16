@@ -6,6 +6,7 @@
 #define REG_SHELL_DIRECTORY			"*\\Shell\\"
 #define REG_BACKGROUND_DIRECTORY	"Directory\\Background\\shell\\"
 #define REG_DESKTOP_BACKGROUND		"DesktopBackground\\shell\\"
+#define TEST_REG					"SOFTWARE\\GARY\\"
 
 typedef struct {
 	char name[MAX_PATH];
@@ -99,7 +100,7 @@ bool register_info(RegInfo* info)
 {
 	HKEY result;
 	long result_value = -1;
-	if (result_value = RegCreateKeyEx(info->key, info->path, 0, NULL, REG_OPTION_NON_VOLATILE, KEY_CREATE_SUB_KEY | KEY_ALL_ACCESS, NULL, &result, NULL) == ERROR_SUCCESS) {
+	if (result_value = RegCreateKeyEx(info->key, info->path, 0, NULL, REG_OPTION_NON_VOLATILE, KEY_ALL_ACCESS, NULL, &result, NULL) == ERROR_SUCCESS) {
 		for (int i = 0; i < info->item_count; i++) {
 			char* temp_name = info->items[i].name[0] == '\0' ? NULL : info->items[i].name;
 			if (result_value = RegSetValueEx(

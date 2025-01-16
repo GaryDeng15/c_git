@@ -362,6 +362,45 @@ void engine_loop() {
 
 			destroy_c_string(&c_string);*/
 		}
+		else if (strstr(input_buff, "git clone") != 0) {
+			simple_c_string c_string;
+			dismantle_string(input_buff, " ", &c_string);
+			char* clone_path = get_str(2, &c_string);
+			remove_char_end(clone_path, '\n');
+
+			if (strstr(clone_path, ".") != 0) {
+
+			}
+			else {
+				log_error("%s 当前路径非法，至少需要文件名加后缀", clone_path);
+			}
+
+			char current_path[MAX_PATH] = { 0 };
+			_getcwd(current_path, MAX_PATH);
+
+			def_c_paths file_paths;
+			find_files(clone_path, &file_paths, true);
+
+			simple_c_string clone_path_break;
+			if (strstr(clone_path, "\\") != 0) {
+				dismantle_string(clone_path, "\\", &clone_path_break);
+			}
+			else if (strstr(clone_path, "/") != 0) {
+				dismantle_string(clone_path, "/", &clone_path_break);
+			}
+			else {
+				log_error("%s 无效，非标准路径", clone_path);
+				break;
+			}
+			char* clone_file_name = get_str(clone_path_break.size, &c_string);
+			remove_char_end(clone_file_name, '\n');
+
+			for (int i = 0; i < file_paths.index; i++) {
+				
+			}
+
+			destroy_c_string(&c_string);
+		}
 		else if (strstr(input_buff, "git --help") != 0) {
 			log_log("git init\t 初始化");
 			log_log("git remote add origin\t 设置远端路径");

@@ -33,6 +33,15 @@
     <ClCompile Include="simple_c_array\Private\simple_c_array_string.c">
       <Filter>Source Files\simple_c_array\Private</Filter>
     </ClCompile>
+    <ClCompile Include="simple_c_helper_file\Private\simple_helper_file.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="simple_c_string_algorithm\Private\simple_string_algorithm.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="simple_c_windows\Private\simple_c_windows_settings.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="simple_c_array\Public\simple_c_array.h">
@@ -43,6 +52,27 @@
     </ClInclude>
     <ClInclude Include="simple_c_array\Public\Core\simple_c_array_marco.h">
       <Filter>Source Files\simple_c_array\Public\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="simple_c_array\simple_c_array.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="simple_c_helper_file\Public\simple_helper_file.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="simple_c_helper_file\simple_c_helper_file.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="simple_c_string_algorithm\Public\simple_string_algorithm.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="simple_c_string_algorithm\simple_c_string_algorithm.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="simple_c_windows\Public\simple_c_windows_settings.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="simple_c_windows\simple_c_windows.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
