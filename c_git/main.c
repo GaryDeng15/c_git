@@ -378,8 +378,7 @@ void engine_loop() {
 			char current_path[MAX_PATH] = { 0 };
 			_getcwd(current_path, MAX_PATH);
 
-			def_c_paths file_paths;
-			find_files(clone_path, &file_paths, true);
+
 
 			simple_c_string clone_path_break;
 			if (strstr(clone_path, "\\") != 0) {
@@ -392,14 +391,30 @@ void engine_loop() {
 				log_error("%s 无效，非标准路径", clone_path);
 				break;
 			}
+
 			char* clone_file_name = get_str(clone_path_break.size, &c_string);
 			remove_char_end(clone_file_name, '\n');
 
+			char buff_local_path[MAX_PATH] = { 0 };
+			get_printf(buff_local_path, "%s\\%s\\", current_path, clone_file_name);
+
+			def_c_paths file_paths;
+			find_files(clone_path, &file_paths, true);
 			for (int i = 0; i < file_paths.index; i++) {
-				
+				char temp_buff[MAX_PATH] = { 0 };
+				strcpy(temp_buff, file_paths.paths[i]);
+				remove_string_start(temp_buff, buff_local_path);
+				strcat(buff_local_path, temp_buff);
+				if (!copy_file(file_paths.paths[i], buff_local_path)) {
+					log_log("将 %s 路径下拉取到 %s 成功", file_paths.paths[i], buff_local_path);
+				}
+				else {
+					log_error("将 %s 路径下拉取到 %s 失败", file_paths.paths[i], buff_local_path);
+				}
 			}
 
 			destroy_c_string(&c_string);
+			destroy_c_string(&clone_path_break);
 		}
 		else if (strstr(input_buff, "git --help") != 0) {
 			log_log("git init\t 初始化");
